@@ -74,38 +74,39 @@ for curr in data:
 #print(adjList)
 
 def checkUser():
-    user = input("What user? (CaSe-Sensitive) ")
+    user = input("What user? (Case-Sensitive) ")
     if name.get(user) == None:
-        print(user, " does NOT exist")
+        print(user, "does NOT exist.")
     else:
-        print(user, " does exist")
+        print(user, "does exist.")
 
 def checkConnection():
-    users = (input("What users (seperated by spaces)(CaSe-sensitive)? ")).split(" ")
+    users = (input("What users (seperated by spaces)(Case-sensitive)? ")).split(" ")
     found = True
     if name.get(users[0]) == None:
-        print("User ", users[0], " does not exist")
+        print("User", users[0], "does not exist.")
         found = False
     if name.get(users[1]) == None:
-        print("User ", users[1], " does not exist")
+        print("User", users[1], "does not exist.")
         found = False
     if found:
         for friends in adjList[name.get(users[0])]:
             if friends[0] == users[1]:
-                print("The connection from ", users[0], " to ", users[1],
-                      " has weight", friends[1])
+                print("The connection from", users[0], "to", users[1],
+                      "has weight", friends[1], ".")
                 return
-        print("The edge from ", users[0], " to ", users[1], " does not exist")
+        print("The edge from", users[0], "to", users[1], "does not exist.")
     #print(users)
 
 def main():
     exitProgram = False
     while exitProgram == False:
-        print(" ")
+        print()
         print("What do you want to do?")
-        print("1) Check if user exists")
-        print("2) Check the connection between users")
+        print("1) Check if user exists.")
+        print("2) Check the connection between users.")
         print("3) Quit")
+        print()
         command = int(input())
         if command == 1:
             checkUser()
@@ -114,6 +115,6 @@ def main():
         elif command == 3:
             exitProgram = True
         else:
-            print("Not a valid selection")
+            print("Not a valid selection, please pick from the choices above.")
 
 main()
