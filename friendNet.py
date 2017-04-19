@@ -120,12 +120,27 @@ def dijkstra(graph, source):
 
         n = get_neighbours(graph, x)
         for vertex in n:
-            alternative = distance[u] + distance_between(graph, x, vertex)
+            alternative = distance[x] + distance_between(graph, x, vertex)
             if alternative < distance[vertex]:
                 distance[vertex] = alternative
                 previous[vertex] = x
 
     return previous
+
+def minimum_distance(distance, setOfVertices):
+    minV = 0
+    for x in distance:
+        if x < distance[minV]:
+            minV = distance.index(x)
+    return setOfVertices[minV]
+
+def get_neighbours(graph, x):
+    temp = name.get(x)
+    friends = adjList[temp]
+    return friends
+
+def distance_between(graph, x, vertex):
+    return vertex[1]
 
 def main():
     exitProgram = False
@@ -145,8 +160,8 @@ def main():
         elif command == 3:
             exitProgram = True
         elif command == 4:
-            #call the function
-            #print(dijkstra(graph, 'A')
+            tempName = input("Enter name for both user(case-sensitive): ")
+            print(dijkstra(adjList, tempName))
         else:
             print("Not a valid selection, please pick from the choices above.")
 
