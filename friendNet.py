@@ -98,6 +98,35 @@ def checkConnection():
         print("The edge from", users[0], "to", users[1], "does not exist.")
     #print(users)
 
+def dijkstra(graph, source):
+    vertices,edges = graph
+    distance = dict()
+    previous = dict()
+
+    for vertex in vertices:
+        distance[vertex] = float("inf")
+        previous[vertex] = None
+
+    distance[source] = 0
+    setOfVertices = set(vertices)
+
+    while len(setOfVertices) > 0:
+        x = minimum_distance(distance, setOfVertices)
+        print("Going from",source,"to",x,"is a distance of",distance[x])
+        setOfVertices.remove(x)
+
+        if distance[x] == float("inf"):
+            break
+
+        n = get_neighbours(graph, x)
+        for vertex in n:
+            alternative = distance[u] + distance_between(graph, x, vertex)
+            if alternative < distance[vertex]:
+                distance[vertex] = alternative
+                previous[vertex] = x
+
+    return previous
+
 def main():
     exitProgram = False
     while exitProgram == False:
@@ -106,6 +135,7 @@ def main():
         print("1) Check if user exists.")
         print("2) Check the connection between users.")
         print("3) Quit")
+        print("4) Dijkstra’s Algorithm")
         print()
         command = int(input())
         if command == 1:
@@ -114,6 +144,9 @@ def main():
             checkConnection()
         elif command == 3:
             exitProgram = True
+        elif command == 4:
+            #call the function
+            #print(dijkstra(graph, 'A')
         else:
             print("Not a valid selection, please pick from the choices above.")
 
