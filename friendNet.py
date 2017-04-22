@@ -6,7 +6,7 @@
 #   Ben Rieckers
 #
 #Class: CPSC 450
-#Assignment: FriendNet (Deliverable 1)
+#Assignment: FriendNet (Deliverable 2)
 #
 #"Best Friend Chain"
 #   We will be using Dijkstras algorithm, in essence finding the
@@ -34,6 +34,10 @@
 #
 #____________________________________________
 
+try:
+    from Queue import PriorityQueue, Empty 
+except:
+    from queue import PriorityQueue, Empty
 
 file = open("friend_network.txt", "r")
 
@@ -54,6 +58,8 @@ adjList = []
 
 count = 0
 
+peopleInOrder = []
+
 #creates adjacency list and dictionary
 #format: [ [['Scooter', 10], ['Daisy', 2]], [['Roland', 8]] ]
 for curr in data:
@@ -64,14 +70,12 @@ for curr in data:
         name[curr[0]] = count
         adjList.append([[curr[1], curr[2]]])
         count += 1
+        peopleInOrder.append(curr[0])
     #if name is in dictionary, gets the index and adds
     # the friends name and value of relationship to the
     # adjList at the appropriate index
     else:
         adjList[name.get(curr[0])].append([curr[1], curr[2]])
-
-#print("adjacency list")
-#print(adjList)
 
 def checkUser():
     user = input("What user? (Case-Sensitive) ")
@@ -96,51 +100,41 @@ def checkConnection():
                       "has weight", friends[1], ".")
                 return
         print("The edge from", users[0], "to", users[1], "does not exist.")
-    #print(users)
 
-def dijkstra(graph, source):
-    vertices,edges = graph
-    distance = dict()
-    previous = dict()
 
-    for vertex in vertices:
-        distance[vertex] = float("inf")
-        previous[vertex] = None
+def dijkstra2(Graph, source):
+    dist = dict()
+    prev = dict()
+    for v in peopleInOrder:
+        dist[v] = float("inf")
+        prev[v] = None
+    dist[source] = 0
+    Q = list(peopleInOrder)
+    while len(Q) > 0:
+        minK = Q[0]
+        for user in Q:
+            if dist.get(user) <= dist.get(minK):
+                minK = user
+        Q.remove(minK)
+        neighbors = adjList[name.get(minK)]
+        for person in neighbors:
+            alt = dist[minK] + 10-person[1]
+            if alt < dist[person[0]]:
+                dist[person[0]] = alt
+                prev[person[0]] = minK
+    return prev
 
-    distance[source] = 0
-    setOfVertices = set(vertices)
-
-    while len(setOfVertices) > 0:
-        x = minimum_distance(distance, setOfVertices)
-        print("Going from",source,"to",x,"is a distance of",distance[x])
-        setOfVertices.remove(x)
-
-        if distance[x] == float("inf"):
-            break
-
-        n = get_neighbours(graph, x)
-        for vertex in n:
-            alternative = distance[x] + distance_between(graph, x, vertex)
-            if alternative < distance[vertex]:
-                distance[vertex] = alternative
-                previous[vertex] = x
-
-    return previous
-
-def minimum_distance(distance, setOfVertices):
-    minV = 0
-    for x in distance:
-        if x < distance[minV]:
-            minV = distance.index(x)
-    return setOfVertices[minV]
-
-def get_neighbours(graph, x):
-    temp = name.get(x)
-    friends = adjList[temp]
-    return friends
-
-def distance_between(graph, x, vertex):
-    return vertex[1]
+def bestFriendChain(personA, personB):
+    connections = dijkstra2(adjList, personA)
+    chain = []
+    chain.append(personB)
+    while personB != personA and personB != None:
+        personB = connections.get(personB)
+        chain.append(personB)
+    if personB == None:
+        print("No chain exists between the users")
+    else:
+        print("Best friend chain is ", list(reversed(chain)))
 
 def main():
     exitProgram = False
@@ -149,20 +143,21 @@ def main():
         print("What do you want to do?")
         print("1) Check if user exists.")
         print("2) Check the connection between users.")
-        print("3) Quit")
-        print("4) Dijkstra’s Algorithm")
+        print("3) Dijkstra’s Algorithm")
+        print("4) Quit")
         print()
         command = int(input())
         if command == 1:
             checkUser()
         elif command == 2:
             checkConnection()
-        elif command == 3:
-            exitProgram = True
         elif command == 4:
-            tempName = input("Enter name for both user(case-sensitive): ")
-            print(dijkstra(adjList, tempName))
+            exitProgram = True
+        elif command == 3:
+            users = (input("What users (seperated by spaces)(Case-sensitive)? ")).split(" ")
+            bestFriendChain(users[0], users[1])
         else:
             print("Not a valid selection, please pick from the choices above.")
+            
 
 main()
