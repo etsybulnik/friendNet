@@ -58,6 +58,7 @@ adjList = []
 
 count = 0
 
+#index in adjList corresponds to name at that index in 'peopleInOrder'
 peopleInOrder = []
 
 #creates adjacency list and dictionary
@@ -136,6 +137,45 @@ def bestFriendChain(personA, personB):
     else:
         print("Best friend chain is ", list(reversed(chain)))
 
+def mostMutualFriends(user):
+    print("")
+    print(adjList)
+    print("")
+    userIndex = name.get(user)
+    #if(userIndex != 0):
+    personIndex = []
+    maxMutual = 0
+##    else:
+##        personIndex = 1
+##        maxMutual = 0
+    userFriends = adjList[userIndex]
+    print("index is", userIndex)
+    print("friends are", userFriends)
+    adjListLength = len(adjList)
+    #print("adjList", adjListLength)
+    for index in range(0, adjListLength):
+        if index != userIndex:
+            count = 0
+            for people in adjList[index]:
+                for friends in adjList[userIndex]:
+                    if(people[0] == friends[0]):
+                        count += 1
+            if(count > maxMutual):
+                maxMutual = count
+                personIndex = [index]
+                #print("person index after clearing", personIndex)
+                #personIndex.append(index)
+            elif(count == maxMutual ):
+                personIndex.append(index)
+    if( maxMutual != 0 ):
+        print("the max mutual is", maxMutual)
+        print("the person index is", personIndex)
+    else:
+        print("Nobody has mutual friends with", user)
+                
+        
+        
+    
 def main():
     exitProgram = False
     while exitProgram == False:
@@ -144,18 +184,22 @@ def main():
         print("1) Check if user exists.")
         print("2) Check the connection between users.")
         print("3) Dijkstra’s Algorithm")
-        print("4) Quit")
+        print("4) Most mutual friends")
+        print("5) Quit")
         print()
         command = int(input())
         if command == 1:
             checkUser()
         elif command == 2:
             checkConnection()
-        elif command == 4:
+        elif command == 5:
             exitProgram = True
         elif command == 3:
             users = (input("What users (seperated by spaces)(Case-sensitive)? ")).split(" ")
             bestFriendChain(users[0], users[1])
+        elif command == 4:
+            user = (input("What user? (Case-sensitive): "))
+            mostMutualFriends(user)
         else:
             print("Not a valid selection, please pick from the choices above.")
             
