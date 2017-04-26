@@ -172,7 +172,59 @@ def mostMutualFriends(user):
         print("the person index is", personIndex)
     else:
         print("Nobody has mutual friends with", user)
-                
+
+def isFriendsWith(a, b):
+    flag = False
+    for friends in adjList[name.get(a)]:
+        if friends[0] == b:
+            flag = True
+            break
+    return flag
+
+
+def recommendFriend(user):
+    found = True
+    if name.get(user) == None:
+        print("User ", users[0], " does not exist")
+        found = false
+    elif found:
+        possibleFriends = []
+        possibleFriendCount = 0
+        for friends in adjList[name.get(user)]:
+            if possibleFriendCount < 4:
+                #If A hates B
+                if friends[1] < 3:
+                    #Find first friend that B hates that is not user or already friends with user
+                    for Bfriends in adjList[name.get(friends[0])]:
+                        if Bfriends[1] < 3 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
+                            possibleFriends.append(Bfriends[0])
+                            possibleFriendCount += 1
+                            break
+                #If A doesn't like B
+                elif friends[1] < 6:
+                    #Find first friend that B doesn't like
+                    for Bfriends in adjList[name.get(friends[0])]:
+                        if Bfriends[1] > 2 and Bfriends[1] < 6 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
+                            possibleFriends.append(Bfriends[0])
+                            possibleFriendCount += 1
+                            break
+                #If A is pretty good friends with B
+                elif friends[1] < 9:
+                    #Find first friend that B is pretty good friends with
+                    for Bfriends in adjList[name.get(friends[0])]:
+                        if Bfriends[1] > 5 and Bfriends[1] < 9 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
+                            possibleFriends.append(Bfriends[0])
+                            possibleFriendCount += 1
+                            break
+                #Else A and B are very good friends
+                else:
+                    #Find first person that B like
+                    for Bfriends in adjList[name.get(friends[0])]:
+                        if Bfriends[1] > 8 and Bfriends[0] != user and Bfriends[0] and not isFriendsWith(user, Bfriends[0]):
+                            possibleFriends.append(Bfriends[0])
+                            possibleFriendCount += 1
+                            break
+        print("Recommended friends for ", user, ": ", possibleFriends)
         
         
     
@@ -185,21 +237,25 @@ def main():
         print("2) Check the connection between users.")
         print("3) Dijkstra’s Algorithm")
         print("4) Most mutual friends")
-        print("5) Quit")
+        print("5) Recommend friends")
+        print("6) Quit")
         print()
         command = int(input())
         if command == 1:
             checkUser()
         elif command == 2:
             checkConnection()
-        elif command == 5:
-            exitProgram = True
         elif command == 3:
             users = (input("What users (seperated by spaces)(Case-sensitive)? ")).split(" ")
             bestFriendChain(users[0], users[1])
         elif command == 4:
             user = (input("What user? (Case-sensitive): "))
             mostMutualFriends(user)
+        elif command == 5:
+            user = (input("What user? (Case-sensitive): "))
+            recommendFriend(user)
+        elif command == 6:
+            exitProgram = True
         else:
             print("Not a valid selection, please pick from the choices above.")
             
