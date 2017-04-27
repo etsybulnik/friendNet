@@ -20,13 +20,14 @@
 #       This will work by looking at the friends of user 'A' and then based 
 #       on A's likeability of his friends, the algorithm will recommend
 #       friends of those friends also based on how good of friends they are.
-#       Thus if A rates B a 9 then it will recommend all of B's friends who
-#       are ranked 7 and above whereas if A rated B a 7 then it would only
-#       recommend the friends of B that are rated 9 or above.
+#       It will recommend friends who have likability >7 of friends of the user
+#       who have likability of >7.
+#       It will also recommend frienemies of friends who have likabilty <4 of
+#       friends of the user who have likability of <4. (Double negative = positive?)
 #       
 #   -Who has the most mutual friends as you?
 #       Given a user A, the algorithm will go through the entire graph
-#       searching for the user who has the most mutual friends as you.
+#       searching for the user(s) who has the most mutual friends as you.
 #       This will simply be iterating through everyones list of friends
 #       comparing them to your friends. The person who has the most
 #       mutual friends will updated as we loop through all of the
@@ -34,10 +35,6 @@
 #
 #____________________________________________
 
-try:
-    from Queue import PriorityQueue, Empty 
-except:
-    from queue import PriorityQueue, Empty
 
 file = open("friend_network.txt", "r")
 
@@ -53,6 +50,7 @@ for line in file:
 
 file.close()
 
+#contains the name and index of each person
 name = dict()
 adjList = []
 
@@ -139,37 +137,31 @@ def bestFriendChain(personA, personB):
 
 def mostMutualFriends(user):
     print("")
-    print(adjList)
-    print("")
     userIndex = name.get(user)
-    #if(userIndex != 0):
     personIndex = []
     maxMutual = 0
-##    else:
-##        personIndex = 1
-##        maxMutual = 0
     userFriends = adjList[userIndex]
-    print("index is", userIndex)
-    print("friends are", userFriends)
     adjListLength = len(adjList)
-    #print("adjList", adjListLength)
+    #loops over all people in adjList
     for index in range(0, adjListLength):
         if index != userIndex:
             count = 0
+            #loops over all friends of person at that index
             for people in adjList[index]:
+                #compares with users friends
                 for friends in adjList[userIndex]:
                     if(people[0] == friends[0]):
                         count += 1
             if(count > maxMutual):
                 maxMutual = count
                 personIndex = [index]
-                #print("person index after clearing", personIndex)
-                #personIndex.append(index)
             elif(count == maxMutual ):
                 personIndex.append(index)
+    #print results
     if( maxMutual != 0 ):
-        print("the max mutual is", maxMutual)
-        print("the person index is", personIndex)
+        print(user, "has", maxMutual, "friend(s) with:")
+        for index in personIndex:
+            print(peopleInOrder[index])
     else:
         print("Nobody has mutual friends with", user)
 
