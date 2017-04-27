@@ -2,6 +2,9 @@ Ellie Scooter 10
 Scooter Ellie 9
 Ellie Jack 6
 Jack Ellie 5
+Ellie Josh 2
+Josh Ellie 3
+Josh Mike 3
 Jack Mike 6
 Mike Jack 5
 Scooter Daisy 9

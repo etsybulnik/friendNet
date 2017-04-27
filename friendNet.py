@@ -181,7 +181,6 @@ def isFriendsWith(a, b):
             break
     return flag
 
-
 def recommendFriend(user):
     found = True
     if name.get(user) == None:
@@ -193,7 +192,6 @@ def recommendFriend(user):
         fenemyCount = 0
         bestFriendCount = 0
         for friends in adjList[name.get(user)]:
-            if fenemyCount < 4 or bestFriendCount:
                 #If A hates B
                 if friends[1] < 4:
                     #Find first friend that B hates that is not user or already friends with user
@@ -201,36 +199,15 @@ def recommendFriend(user):
                         if Bfriends[1] < 4 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
                             frenemies.append(Bfriends[0])
                             fenemyCount += 1
-                            break
-                #If A doesn't like B
-                #elif friends[1] < 6:
-                    #Find first friend that B doesn't like
-                 #   for Bfriends in adjList[name.get(friends[0])]:
-                 #       if Bfriends[1] > 2 and Bfriends[1] < 6 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
-                 #           possibleFriends.append(Bfriends[0])
-                 #           possibleFriendCount += 1
-                 #           break
-                #If A is pretty good friends with B
-                #elif friends[1] < 9:
-                    #Find first friend that B is pretty good friends with
-                 #   for Bfriends in adjList[name.get(friends[0])]:
-                  #      if Bfriends[1] > 5 and Bfriends[1] < 9 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
-                   #         possibleFriends.append(Bfriends[0])
-                    #        possibleFriendCount += 1
-                     #       break
-                #Else A and B are very good friends
-                else:
+                elif friends[1] > 7:
                     #Find first person that B like
                     for Bfriends in adjList[name.get(friends[0])]:
-                        if Bfriends[1] > 7 and Bfriends[0] != user and Bfriends[0] and not isFriendsWith(user, Bfriends[0]):
+                        if Bfriends[1] > 7 and Bfriends[0] != user and not isFriendsWith(user, Bfriends[0]):
                             bestFriends.append(Bfriends[0])
                             bestFriendCount += 1
-                            break
         print("Recommended frenemies for ", user, ": ", frenemies)
         print("Recommended best friends for ", user, ": ", bestFriends)
-        
-        
-    
+
 def main():
     exitProgram = False
     while exitProgram == False:
