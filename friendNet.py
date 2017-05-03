@@ -22,13 +22,13 @@
 #       friends of those friends also based on how good of friends they are.
 #       It will recommend friends who have likability >7 of friends of the user
 #       who have likability of >7.
-#       It will also recommend frienemies of friends who have likabilty <4 of
+#       It will also recommend frienemies of friends who have likeability <4 of
 #       friends of the user who have likability of <4. (Double negative = positive?)
 #       
 #   -Who has the most mutual friends as you?
 #       Given a user A, the algorithm will go through the entire graph
 #       searching for the user(s) who has the most mutual friends as you.
-#       This will simply be iterating through everyones list of friends
+#       This will simply be iterating through everyone's list of friends
 #       comparing them to your friends. The person who has the most
 #       mutual friends will updated as we loop through all of the
 #       people.
@@ -159,7 +159,7 @@ def mostMutualFriends(user):
                 personIndex.append(index)
     #print results
     if( maxMutual != 0 ):
-        print(user, "has", maxMutual, "friend(s) with:")
+        print(user, "has", maxMutual, "mutual friend(s) with:")
         for index in personIndex:
             print(peopleInOrder[index])
     else:
@@ -207,7 +207,7 @@ def main():
         print("What do you want to do?")
         print("1) Check if user exists.")
         print("2) Check the connection between users.")
-        print("3) Dijkstra’s Algorithm")
+        print("3) Best Friend Chain")
         print("4) Most mutual friends")
         print("5) Recommend friends")
         print("6) Quit")
