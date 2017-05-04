@@ -6,7 +6,7 @@
 #   Ben Rieckers
 #
 #Class: CPSC 450
-#Assignment: FriendNet (Deliverable 2)
+#Assignment: FriendNet (Final Part)
 #
 #"Best Friend Chain"
 #   We will be using Dijkstras algorithm, in essence finding the
@@ -137,33 +137,38 @@ def bestFriendChain(personA, personB):
 
 def mostMutualFriends(user):
     print("")
-    userIndex = name.get(user)
-    personIndex = []
-    maxMutual = 0
-    userFriends = adjList[userIndex]
-    adjListLength = len(adjList)
-    #loops over all people in adjList
-    for index in range(0, adjListLength):
-        if index != userIndex:
-            count = 0
-            #loops over all friends of person at that index
-            for people in adjList[index]:
-                #compares with users friends
-                for friends in adjList[userIndex]:
-                    if(people[0] == friends[0]):
-                        count += 1
-            if(count > maxMutual):
-                maxMutual = count
-                personIndex = [index]
-            elif(count == maxMutual ):
-                personIndex.append(index)
-    #print results
-    if( maxMutual != 0 ):
-        print(user, "has", maxMutual, "mutual friend(s) with:")
-        for index in personIndex:
-            print(peopleInOrder[index])
-    else:
-        print("Nobody has mutual friends with", user)
+    found = True
+    if name.get(user) == None:
+        print("User does not exist")
+        found = False
+    elif found:
+        userIndex = name.get(user)
+        personIndex = []
+        maxMutual = 0
+        userFriends = adjList[userIndex]
+        adjListLength = len(adjList)
+        #loops over all people in adjList
+        for index in range(0, adjListLength):
+            if index != userIndex:
+                count = 0
+                #loops over all friends of person at that index
+                for people in adjList[index]:
+                    #compares with users friends
+                    for friends in adjList[userIndex]:
+                        if(people[0] == friends[0]):
+                            count += 1
+                if(count > maxMutual):
+                    maxMutual = count
+                    personIndex = [index]
+                elif(count == maxMutual ):
+                    personIndex.append(index)
+        #print results
+        if( maxMutual != 0 ):
+            print(user, "has", maxMutual, "mutual friend(s) with:")
+            for index in personIndex:
+                print(peopleInOrder[index])
+        else:
+            print("Nobody has mutual friends with", user)
 
 def isFriendsWith(a, b):
     flag = False
@@ -176,8 +181,8 @@ def isFriendsWith(a, b):
 def recommendFriend(user):
     found = True
     if name.get(user) == None:
-        print("User ", users[0], " does not exist")
-        found = false
+        print("User does not exist")
+        found = False
     elif found:
         frenemies = []
         bestFriends = []
